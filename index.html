@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tool Selector for Psychiatrists</title>
+    <title>AI Model Selector for Medical Professionals</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -106,25 +106,49 @@
             color: white;
             padding: 25px;
             border-radius: 15px;
-            text-align: center;
             margin-top: 20px;
         }
 
         .result h2 {
             margin-top: 0;
             font-size: 1.8em;
+            text-align: center;
         }
 
-        .result p {
-            font-size: 1.1em;
-            line-height: 1.6;
+        .recommendations {
+            margin-top: 20px;
         }
 
-        .tool-details {
-            background: rgba(255,255,255,0.2);
+        .recommendation {
+            background: rgba(255,255,255,0.15);
             padding: 15px;
             border-radius: 10px;
-            margin-top: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 40px;
+        }
+
+        .model-info {
+            flex-grow: 1;
+        }
+
+        .model-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .model-description {
+            font-size: 0.95em;
+            opacity: 0.9;
+            line-height: 1.3;
         }
 
         .reset-btn {
@@ -134,7 +158,8 @@
             padding: 10px 20px;
             border-radius: 20px;
             cursor: pointer;
-            margin-top: 15px;
+            margin: 20px auto 0;
+            display: block;
         }
 
         .reset-btn:hover {
@@ -153,26 +178,36 @@
             h1 {
                 font-size: 1.8em;
             }
+
+            .recommendation {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .rank {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🧠 AI Tool Selector</h1>
-        <p class="subtitle">Find the best AI tool for your psychiatric practice</p>
+        <h1>🧠 AI Model Selector</h1>
+        <p class="subtitle">Find the best AI models for your professional tasks</p>
 
-        <form id="toolSelector">
+        <form id="modelSelector">
             <!-- Question 1: Information Source -->
             <div class="question">
                 <h3>1. What type of information will you work with?</h3>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="source1" name="source" value="notebook">
+                        <input type="radio" id="source1" name="source" value="specific">
                         <label for="source1">Specific documents I have (research papers, guidelines, my notes)</label>
                     </div>
                     <div class="option">
                         <input type="radio" id="source2" name="source" value="general">
-                        <label for="source2">General medical knowledge and current information</label>
+                        <label for="source2">General knowledge and current information</label>
                     </div>
                     <div class="option">
                         <input type="radio" id="source3" name="source" value="mixed">
@@ -181,21 +216,21 @@
                 </div>
             </div>
 
-            <!-- Question 2: Task Scope -->
+            <!-- Question 2: Task Complexity -->
             <div class="question">
-                <h3>2. What's the scope of your task?</h3>
+                <h3>2. How complex is your task?</h3>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="scope1" name="scope" value="quick">
-                        <label for="scope1">Quick task (few minutes, short response)</label>
+                        <input type="radio" id="complexity1" name="complexity" value="simple">
+                        <label for="complexity1">Simple task (quick answers, basic summaries)</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="scope2" name="scope" value="medium">
-                        <label for="scope2">Medium task (single document, detailed analysis)</label>
+                        <input type="radio" id="complexity2" name="complexity" value="moderate">
+                        <label for="complexity2">Moderate complexity (detailed analysis, structured reports)</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="scope3" name="scope" value="complex">
-                        <label for="scope3">Complex task (multiple sources, comprehensive analysis)</label>
+                        <input type="radio" id="complexity3" name="complexity" value="complex">
+                        <label for="complexity3">Highly complex (deep reasoning, multi-step analysis)</label>
                     </div>
                 </div>
             </div>
@@ -205,7 +240,7 @@
                 <h3>3. How critical is accuracy for this task?</h3>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="accuracy1" name="accuracy" value="creative">
+                        <input type="radio" id="accuracy1" name="accuracy" value="flexible">
                         <label for="accuracy1">Brainstorming/creative ideas (some errors acceptable)</label>
                     </div>
                     <div class="option">
@@ -213,27 +248,27 @@
                         <label for="accuracy2">Professional work (good accuracy, will double-check)</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="accuracy3" name="accuracy" value="high">
-                        <label for="accuracy3">Clinical/research work (highest accuracy required)</label>
+                        <input type="radio" id="accuracy3" name="accuracy" value="critical">
+                        <label for="accuracy3">Critical work (highest accuracy required)</label>
                     </div>
                 </div>
             </div>
 
-            <!-- Question 4: Output Format -->
+            <!-- Question 4: Speed vs Quality -->
             <div class="question">
-                <h3>4. What type of output do you need?</h3>
+                <h3>4. What's more important for this task?</h3>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="output1" name="output" value="conversation">
-                        <label for="output1">Conversational responses and discussion</label>
+                        <input type="radio" id="speed1" name="speed" value="fast">
+                        <label for="speed1">Speed - I need quick results</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="output2" name="output" value="document">
-                        <label for="output2">Structured documents (reports, letters, summaries)</label>
+                        <input type="radio" id="speed2" name="speed" value="balanced">
+                        <label for="speed2">Balanced - reasonable speed and quality</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="output3" name="output" value="analysis">
-                        <label for="output3">Data analysis, charts, or research synthesis</label>
+                        <input type="radio" id="speed3" name="speed" value="quality">
+                        <label for="speed3">Quality - I can wait for the best results</label>
                     </div>
                 </div>
             </div>
@@ -251,164 +286,247 @@
                         <label for="integration2">Google Workspace (Gmail, Docs, Drive)</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="integration3" name="integration" value="notion">
-                        <label for="integration3">Project management/note-taking systems</label>
+                        <input type="radio" id="integration3" name="integration" value="workflow">
+                        <label for="integration3">Project management/workflow systems</label>
                     </div>
                 </div>
             </div>
 
-            <button type="button" class="calculate-btn" onclick="calculateResult()">Find My AI Tool</button>
+            <button type="button" class="calculate-btn" onclick="calculateResult()">Find My Best AI Models</button>
         </form>
 
         <div id="result" class="result">
-            <h2 id="toolName"></h2>
-            <p id="toolDescription"></p>
-            <div id="toolDetails" class="tool-details"></div>
+            <h2>Your Top AI Model Recommendations</h2>
+            <div id="recommendations" class="recommendations"></div>
             <button class="reset-btn" onclick="resetForm()">Try Again</button>
         </div>
     </div>
 
     <script>
-        const toolScores = {
-            chatgpt: 0,
-            claude: 0,
-            gemini: 0,
-            notebook: 0,
-            notion: 0
-        };
-
-        const toolInfo = {
-            chatgpt: {
-                name: "ChatGPT",
-                description: "Best choice for creative, conversational tasks with broad general knowledge.",
-                details: "Strengths: Natural conversation, creative writing, diverse tasks<br>Best for: Brainstorming, patient education materials, creative documentation"
+        const models = {
+            'claude4opus': {
+                name: 'Claude 4 Opus',
+                description: 'Most capable model for complex reasoning, research analysis, and critical thinking tasks',
+                platform: 'Claude'
             },
-            claude: {
-                name: "Claude",
-                description: "Ideal for detailed analysis and tasks requiring high accuracy and reliability.",
-                details: "Strengths: Long text analysis, accuracy, analytical thinking<br>Best for: Literature review, complex case analysis, detailed reports"
+            'o3pro': {
+                name: 'OpenAI o3-pro',
+                description: 'Advanced reasoning model, excellent for complex problem-solving and deep analysis',
+                platform: 'ChatGPT'
             },
-            gemini: {
-                name: "Gemini",
-                description: "Perfect when you need current information and Google Workspace integration.",
-                details: "Strengths: Real-time information, Google integration, multiple sources<br>Best for: Current research, collaborative work, up-to-date treatment guidelines"
+            'gemini25pro': {
+                name: 'Gemini 2.5 Pro',
+                description: 'Google\'s most advanced thinking model, great for coding and complex reasoning',
+                platform: 'Gemini'
             },
-            notebook: {
-                name: "NotebookLM",
-                description: "The right choice when working with your own specific documents and sources.",
-                details: "Strengths: Your own sources, no hallucinations, controlled information<br>Best for: Literature review from specific papers, document analysis, evidence-based summaries"
+            'claude4sonnet': {
+                name: 'Claude 4 Sonnet',
+                description: 'High-performance model with excellent balance of capability and efficiency',
+                platform: 'Claude'
             },
-            notion: {
-                name: "Notion AI",
-                description: "Great for organizing information and integrating AI into your workflow systems.",
-                details: "Strengths: Workflow integration, organization, project management<br>Best for: Treatment plans, case tracking, organized documentation"
+            'o3': {
+                name: 'OpenAI o3',
+                description: 'Strong reasoning capabilities for complex tasks at more accessible pricing',
+                platform: 'ChatGPT'
+            },
+            'claude37sonnet': {
+                name: 'Claude 3.7 Sonnet',
+                description: 'Hybrid reasoning model with both fast and deep thinking modes',
+                platform: 'Claude'
+            },
+            'gemini25flash': {
+                name: 'Gemini 2.5 Flash',
+                description: 'Fast thinking model ideal for balanced performance and efficiency',
+                platform: 'Gemini'
+            },
+            'o4mini': {
+                name: 'OpenAI o4-mini',
+                description: 'Cost-effective reasoning model, excellent for high-volume tasks',
+                platform: 'ChatGPT'
+            },
+            'claude35haiku': {
+                name: 'Claude 3.5 Haiku',
+                description: 'Fastest model with strong capabilities, perfect for quick professional tasks',
+                platform: 'Claude'
+            },
+            'notebooklm': {
+                name: 'NotebookLM',
+                description: 'Google\'s source-grounded model - works only with your uploaded documents',
+                platform: 'NotebookLM'
+            },
+            'gpt4o': {
+                name: 'GPT-4o',
+                description: 'Versatile multimodal model, strong for creative and conversational tasks',
+                platform: 'ChatGPT'
+            },
+            'gemini2flash': {
+                name: 'Gemini 2.0 Flash',
+                description: 'Google\'s efficient workhorse model with multimodal capabilities',
+                platform: 'Gemini'
+            },
+            'notionai': {
+                name: 'Notion AI',
+                description: 'Integrated AI for project management and workflow organization',
+                platform: 'Notion'
             }
         };
 
         function calculateResult() {
-            // Reset scores
-            Object.keys(toolScores).forEach(key => toolScores[key] = 0);
-
             // Check if all questions are answered
-            const questions = ['source', 'scope', 'accuracy', 'output', 'integration'];
+            const questions = ['source', 'complexity', 'accuracy', 'speed', 'integration'];
             for (let question of questions) {
                 if (!document.querySelector(`input[name="${question}"]:checked`)) {
-                    alert('Please answer all questions before getting your recommendation.');
+                    alert('Please answer all questions before getting your recommendations.');
                     return;
                 }
             }
 
-            // Score based on answers
+            // Get answers
             const answers = {};
             questions.forEach(q => {
                 answers[q] = document.querySelector(`input[name="${q}"]:checked`).value;
             });
 
-            // Scoring logic
+            // Calculate scores for each model
+            const scores = {};
+            Object.keys(models).forEach(model => scores[model] = 0);
+
             // Source preference
-            if (answers.source === 'notebook') {
-                toolScores.notebook += 3;
-                toolScores.claude += 1;
+            if (answers.source === 'specific') {
+                scores.notebooklm += 5;
+                scores.claude4opus += 3;
+                scores.claude4sonnet += 2;
+                scores.o3pro += 2;
             } else if (answers.source === 'general') {
-                toolScores.chatgpt += 2;
-                toolScores.gemini += 2;
-                toolScores.claude += 1;
+                scores.gemini25pro += 4;
+                scores.gemini25flash += 3;
+                scores.gemini2flash += 2;
+                scores.o3pro += 3;
+                scores.claude4opus += 2;
             } else { // mixed
-                toolScores.claude += 2;
-                toolScores.gemini += 2;
-                toolScores.chatgpt += 1;
+                scores.claude4opus += 4;
+                scores.gemini25pro += 3;
+                scores.o3pro += 3;
+                scores.claude4sonnet += 2;
+                scores.gemini25flash += 2;
             }
 
-            // Scope preference
-            if (answers.scope === 'quick') {
-                toolScores.chatgpt += 2;
-                toolScores.gemini += 1;
-            } else if (answers.scope === 'medium') {
-                toolScores.claude += 2;
-                toolScores.notebook += 1;
-                toolScores.chatgpt += 1;
+            // Complexity preference
+            if (answers.complexity === 'simple') {
+                scores.claude35haiku += 4;
+                scores.o4mini += 4;
+                scores.gemini25flash += 3;
+                scores.gpt4o += 3;
+                scores.gemini2flash += 2;
+            } else if (answers.complexity === 'moderate') {
+                scores.claude4sonnet += 4;
+                scores.gemini25flash += 3;
+                scores.claude37sonnet += 3;
+                scores.o3 += 3;
+                scores.gpt4o += 2;
             } else { // complex
-                toolScores.claude += 3;
-                toolScores.notebook += 2;
+                scores.claude4opus += 5;
+                scores.o3pro += 5;
+                scores.gemini25pro += 4;
+                scores.claude4sonnet += 3;
+                scores.o3 += 3;
             }
 
             // Accuracy preference
-            if (answers.accuracy === 'creative') {
-                toolScores.chatgpt += 3;
-                toolScores.notion += 1;
+            if (answers.accuracy === 'flexible') {
+                scores.gpt4o += 4;
+                scores.claude35haiku += 3;
+                scores.gemini2flash += 3;
+                scores.notionai += 2;
             } else if (answers.accuracy === 'standard') {
-                toolScores.claude += 1;
-                toolScores.chatgpt += 1;
-                toolScores.gemini += 1;
-                toolScores.notion += 1;
-            } else { // high
-                toolScores.claude += 3;
-                toolScores.notebook += 3;
+                scores.claude4sonnet += 3;
+                scores.gemini25flash += 3;
+                scores.claude37sonnet += 2;
+                scores.o3 += 2;
+                scores.gpt4o += 2;
+            } else { // critical
+                scores.claude4opus += 5;
+                scores.o3pro += 4;
+                scores.notebooklm += 4;
+                scores.gemini25pro += 3;
+                scores.claude4sonnet += 2;
             }
 
-            // Output preference
-            if (answers.output === 'conversation') {
-                toolScores.chatgpt += 3;
-                toolScores.claude += 1;
-            } else if (answers.output === 'document') {
-                toolScores.claude += 2;
-                toolScores.notion += 2;
-                toolScores.chatgpt += 1;
-            } else { // analysis
-                toolScores.claude += 3;
-                toolScores.notebook += 2;
+            // Speed preference
+            if (answers.speed === 'fast') {
+                scores.claude35haiku += 5;
+                scores.o4mini += 4;
+                scores.gemini25flash += 3;
+                scores.gemini2flash += 3;
+                scores.gpt4o += 2;
+            } else if (answers.speed === 'balanced') {
+                scores.claude4sonnet += 4;
+                scores.claude37sonnet += 3;
+                scores.gemini25flash += 3;
+                scores.o3 += 2;
+                scores.gpt4o += 2;
+            } else { // quality
+                scores.claude4opus += 5;
+                scores.o3pro += 4;
+                scores.gemini25pro += 4;
+                scores.claude4sonnet += 2;
             }
 
             // Integration preference
             if (answers.integration === 'standalone') {
-                toolScores.chatgpt += 1;
-                toolScores.claude += 1;
-                toolScores.notebook += 1;
+                scores.claude4opus += 2;
+                scores.o3pro += 2;
+                scores.claude4sonnet += 2;
+                scores.notebooklm += 1;
             } else if (answers.integration === 'google') {
-                toolScores.gemini += 3;
-            } else { // notion
-                toolScores.notion += 3;
+                scores.gemini25pro += 5;
+                scores.gemini25flash += 4;
+                scores.gemini2flash += 3;
+                scores.notebooklm += 2;
+            } else { // workflow
+                scores.notionai += 5;
+                scores.claude4sonnet += 2;
+                scores.gemini25flash += 1;
             }
 
-            // Find the highest scoring tool
-            const winner = Object.keys(toolScores).reduce((a, b) => 
-                toolScores[a] > toolScores[b] ? a : b
-            );
+            // Sort models by score and get top 5
+            const sortedModels = Object.keys(scores)
+                .sort((a, b) => scores[b] - scores[a])
+                .slice(0, 5);
 
-            // Display result
-            document.getElementById('toolName').textContent = toolInfo[winner].name;
-            document.getElementById('toolDescription').textContent = toolInfo[winner].description;
-            document.getElementById('toolDetails').innerHTML = toolInfo[winner].details;
-            document.getElementById('result').style.display = 'block';
+            // Display results
+            displayRecommendations(sortedModels, scores);
+        }
+
+        function displayRecommendations(sortedModels, scores) {
+            const container = document.getElementById('recommendations');
+            const ranks = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
             
-            // Scroll to result
+            container.innerHTML = '';
+            
+            sortedModels.forEach((modelKey, index) => {
+                const model = models[modelKey];
+                const div = document.createElement('div');
+                div.className = 'recommendation';
+                
+                div.innerHTML = `
+                    <div class="rank">${ranks[index]}</div>
+                    <div class="model-info">
+                        <div class="model-name">${model.name}</div>
+                        <div class="model-description">${model.description}</div>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+            
+            document.getElementById('result').style.display = 'block';
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
 
         function resetForm() {
-            document.getElementById('toolSelector').reset();
+            document.getElementById('modelSelector').reset();
             document.getElementById('result').style.display = 'none';
-            Object.keys(toolScores).forEach(key => toolScores[key] = 0);
         }
     </script>
 </body>
